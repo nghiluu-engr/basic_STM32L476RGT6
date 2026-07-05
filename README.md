@@ -93,3 +93,15 @@ All the main code files are placed inside the `SourceCode` folder:
 ### 2. Requirements
 * Use **SPI** interface for MCU to communicate with ICM-20948 to read accelerometer and gyroscope values.
 * Use **I2C** interface for ICM-20948 to communicate with AK09916 to read magnetometer values.
+
+---
+
+## MOTOR
+
+### 1. Main Code
+All the main code files are placed inside the `User_Libs` folder:
+* **ICM-20948 Library (`motor.h` / `motor.c`):** Manages and controls the motor driver.
+
+### 2. Requirements
+* Use **PWM** (Pulse Width Modulation) to adjust the motor speed.
+* Use **GPIO signals** to control the motor direction (forward/reverse).
