@@ -30,6 +30,7 @@ void motor_init(MOTOR *motor, TIM_HandleTypeDef *htim_motor, uint32_t htim_chann
 	GPIO_TypeDef *PHx_port, uint16_t PHx_pin);
 void enable_motor(MOTOR *motor);
 void disable_motor(MOTOR *motor);
-void motor_set_speed(MOTOR *motor, int duty_cycle);
+void set_motor_state(MOTOR *motor, MOTOR_STATE motor_state);
+//void motor_set_speed(MOTOR *motor, int duty_cycle);
 
 #endif

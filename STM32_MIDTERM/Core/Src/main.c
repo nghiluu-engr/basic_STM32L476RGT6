@@ -24,7 +24,7 @@
 //#include "led_rgb.h"
 //#include "button.h"
 //#include "buzzer.h"
-//#include "battery_check.h"
+#include "battery_check.h"
 //#include "motor.h"
 #include "robot_control.h"
 /* USER CODE END Includes */
@@ -64,7 +64,7 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim8;
 
 /* USER CODE BEGIN PV */
-
+uint8_t count = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,6 +81,7 @@ static void MX_TIM8_Init(void);
 /* USER CODE BEGIN 0 */
 void button_pressing_callback()
 {
+	count++;
 	switch (Robot.robot_state)
 	{
 		case ROBOT_IDLE:
@@ -141,10 +142,12 @@ int main(void)
 	
 	motor_init(&MotorA, &htim1, TIM_CHANNEL_1, STSP_RST_GPIO_Port, STSP_RST_Pin, PHA_GPIO_Port, PHA_Pin);
 	motor_init(&MotorB, &htim1, TIM_CHANNEL_2, STSP_RST_GPIO_Port, STSP_RST_Pin, PHB_GPIO_Port, PHB_Pin);
-	enable_motor(&MotorA);
-	enable_motor(&MotorB);
 	
 	robot_init(&Robot, &Led_rgb, &Button_1, &Buzzer, &Battery, &MotorA, &MotorB);
+	robot_idle(&Robot);
+	
+	baterry_check(&Battery);
+	show_battery_state(&Battery);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,10 +157,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//		baterry_check(&Battery);
+		
 //		
 //		buzzer_SetState(&Buzzer, off);
-////		buzzer_BeepTick(&Buzzer);
+//		buzzer_BeepTick(&Buzzer, 50);
 //		
 		button_handle(&Button_1);
 //		

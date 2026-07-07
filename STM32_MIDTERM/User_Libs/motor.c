@@ -11,6 +11,9 @@ void motor_init(MOTOR *motor, TIM_HandleTypeDef *htim_motor, uint32_t htim_chann
 	
 	motor->PHx_port = PHx_port;
 	motor->PHx_pin = PHx_pin;
+	
+//	motor->motor_state = MOTOR_OFF;
+//	disable_motor(motor);
 }
 void enable_motor(MOTOR *motor)
 {
@@ -36,24 +39,43 @@ static void pwm_set_duty(MOTOR *motor, int duty_cycle)
 	uint32_t ccr = (uint32_t)((duty_cycle * arr) / 100);
 	__HAL_TIM_SET_COMPARE(motor->htim_motor, motor->htim_channel_motor, ccr);
 }
-void motor_set_speed(MOTOR *motor, int duty_cycle)
+
+void set_motor_state(MOTOR *motor, MOTOR_STATE motor_state)
 {
-	motor->duty_cycle = duty_cycle;
-	if (motor->duty_cycle < 0)
+	motor->motor_state = motor_state;
+	
+	switch (motor->motor_state)
 	{
-		pwm_set_duty(motor, motor->duty_cycle);
-		HAL_GPIO_WritePin(motor->PHx_port, motor->PHx_pin, 0);
-		motor->motor_state = MOTOR_ON;
-	}
-	else if (motor->duty_cycle > 0)
-	{
-		pwm_set_duty(motor, motor->duty_cycle);
-		HAL_GPIO_WritePin(motor->PHx_port, motor->PHx_pin, 1);
-		motor->motor_state = MOTOR_ON;
-	}
-	else
-	{
-		__HAL_TIM_SET_COMPARE(motor->htim_motor, motor->htim_channel_motor, 0);
-		motor->motor_state = MOTOR_OFF;
+		case MOTOR_ON:
+			motor->duty_cycle = 50;
+			pwm_set_duty(motor, motor->duty_cycle);
+			break;
+		case MOTOR_OFF:
+			motor->duty_cycle = 0;
+			pwm_set_duty(motor, motor->duty_cycle);
+			break;
+		default:
+			break;
 	}
 }
+//void motor_set_speed(MOTOR *motor, int duty_cycle)
+//{
+//	motor->duty_cycle = duty_cycle;
+//	if (motor->duty_cycle < 0)
+//	{
+//		pwm_set_duty(motor, motor->duty_cycle);
+//		HAL_GPIO_WritePin(motor->PHx_port, motor->PHx_pin, 0);
+//		motor->motor_state = MOTOR_ON;
+//	}
+//	else if (motor->duty_cycle > 0)
+//	{
+//		pwm_set_duty(motor, motor->duty_cycle);
+//		HAL_GPIO_WritePin(motor->PHx_port, motor->PHx_pin, 1);
+//		motor->motor_state = MOTOR_ON;
+//	}
+//	else
+//	{
+//		__HAL_TIM_SET_COMPARE(motor->htim_motor, motor->htim_channel_motor, 0);
+//		motor->motor_state = MOTOR_OFF;
+//	}
+//}

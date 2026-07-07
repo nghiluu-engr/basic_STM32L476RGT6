@@ -1,5 +1,5 @@
 #include "button.h"
-uint8_t count = 0;
+
 
 void button_init(BUTTON *button, GPIO_TypeDef *button_port, uint16_t button_pin)
 {
@@ -28,14 +28,10 @@ void button_handle(BUTTON *button)
 		button->button_handling = 1;
 	}
 	
-	if (button->button_handling == 1 && HAL_GetTick() - button->time_debouncing > 15)
+	if (button->button_handling == 1 && HAL_GetTick() - button->time_debouncing > 20)
 	{
 		button->button_state = button->button_filter;
 		button->button_handling = 2;
-	}
-	
-	if (button->button_handling == 2)
-	{
 		if (button->button_state == 0)
 		{
 			button_pressing_callback();

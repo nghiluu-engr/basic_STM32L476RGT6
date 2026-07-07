@@ -3,6 +3,7 @@
 void battery_init(BATTERY *battery, ADC_HandleTypeDef *adc_battery)
 {
 	battery->adc_battery = adc_battery;
+	battery->battery_now = 0;
 	
 	battery->time_start_check = HAL_GetTick();
 }
@@ -19,7 +20,7 @@ void baterry_check(BATTERY *battery)
 }
 void show_battery_state(BATTERY *battery)
 {
-	if (battery->battery_now < 7.5f)
+	if (battery->battery_now >= 7.5f)
 	{
 		battery->battery_state = BATTERY_HIGH;
 	}
