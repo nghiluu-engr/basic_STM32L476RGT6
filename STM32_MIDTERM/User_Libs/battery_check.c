@@ -16,7 +16,7 @@ void baterry_check(BATTERY *battery)
 	HAL_ADC_Stop(battery->adc_battery);
 	HAL_Delay(10);
 	
-	battery->battery_now = ((adc_value * 3.3f) / 4095.0f) * 3.0f;
+	battery->battery_now = ((adc_value * 2.8f) / 4095.0f) * 3.0f;
 }
 void show_battery_state(BATTERY *battery)
 {
